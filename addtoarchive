@@ -1,0 +1,58 @@
+mysql -u olegk202_kdm -p -h 185.74.252.12
+
+SELECT * FROM main_company WHERE plan <> 5 AND plan_to < '2021-08-14 00:00:00'
+
+taskkill /im chrome.exe /t /f
+
+DELETE mg_product, mg_product_user_property
+FROM mg_product
+LEFT JOIN mg_product_user_property
+ON      mg_product.id=mg_product_user_property.product_id
+WHERE mg_product_user_property.value
+LIKE 'glovisaauction %'
+
+SELECT * 
+FROM mg_product
+LEFT JOIN mg_product_user_property
+ON      mg_product.id=mg_product_user_property.product_id
+WHERE mg_product_user_property.value
+LIKE 'glovisaauction %' 
+ORDER BY `id`  DESC 
+
+UPDATE  mg_product
+LEFT JOIN
+        mg_product_user_property
+ON      mg_product.id = mg_product_user_property.product_id
+SET     mg_product.activity = 0
+WHERE   mg_product.activity = 1
+AND mg_product_user_property.value LIKE 'sellcarauction %'
+
+UPDATE  mg_product
+LEFT JOIN
+        mg_product_user_property
+ON      mg_product.id = mg_product_user_property.product_id
+SET     mg_product.activity = 0
+WHERE   mg_product.activity = 1
+AND mg_product_user_property.value LIKE 'lotteautoauction %'
+
+UPDATE  mg_product
+LEFT JOIN
+        mg_product_user_property
+ON      mg_product.id = mg_product_user_property.product_id
+SET     mg_product.activity = 0
+WHERE   mg_product.activity = 1
+AND mg_product.price = 0
+
+UPDATE `mg_product_user_property`
+SET `value` = REPLACE(`value`, 'BMW BMW', 'BMW')
+WHERE `value` LIKE '%BMW BMW%'
+
+UPDATE  mg_product_user_property
+LEFT JOIN
+        mg_product
+ON      mg_product_user_property.product_id = mg_product.id
+SET     mg_product_user_property.value = 'sellcarauction 28/04/2021'
+WHERE   mg_product.activity = 1
+AND  mg_product_user_property.value = 'sellcarauction 21/04/2021'
+
+UPDATE mg_product SET description = replace(description, '?menuCd=WCUAWCUA&', '?menuCd=WCUA&')
