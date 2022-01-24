@@ -15,7 +15,7 @@ def main():
     r = j.fetch(link)
     DATE = j.get_auction_date(r)
     MAX_PAGE = j.get_max_page(r)
-    print("Дата Аукціона", DATE, "Кількість сторінок", MAX_PAGE)
+    #print("Дата Аукціона", DATE, "Кількість сторінок", MAX_PAGE)
     if(config['GLOVIS']['AUTOCODE'] == '0'):
         j.rm_csv("car_id3.txt")
         j.create_txt("car_id3.txt")

@@ -41,10 +41,64 @@ class AddNewProduct:
             # cursor.execute(addproductproperty)
         except Exception as e:
             print(e)
-    def addnewproduct(self,cat_id,title,description,price,url,image_url,code,count=0,activity=1,meta_title="",meta_keywords="",meta_desc="",old_price="",recommend=0,new=0,related="",inside_cat="",weight=1,link_electro=1,currency_iso="USD",price_course="",image_title="",image_alt="",system_set=1):
+    def get_cat_id(self, category):
+        categoty_data = {
+            "Genesis":"Genesis",
+            "Kia":"Kia Motors",
+            "Hyundai":"Hyundai",
+            "Modern":"Hyundai",
+            "Ssangyong":"SsangYong",
+            "Renault":"Renault",
+            "Benz":"Mercedes Benz",
+            "Chevrolet":"Chevrolet",
+            "ChevroletDaewoo":"Chevrolet",
+            "Jaguar":"Jaguar",
+            "BMW":"BMW",
+            "Land":"Land Rover",
+            "Peugeot":"Peugeot",
+            "Volkswagen":"Volkswagen",
+            "Ford":"Ford",
+            "Nissan":"Nissan",
+            "Jeep":"Jeep",
+            "Lexus":"Lexus",
+            "Lincoln":"Lincoln",
+            "Mini":"Mini Cooper",
+            "Cadillac":"Cadillac",
+            "Toyota":"Toyota",
+            "Tesla":"Tesla",
+            "Audi":"Audi",
+            "Chrysler":"Chrysler",
+            "Volvo":"Volvo",
+            "Citroen":"Citroen",
+            "Infinity":"Infinity",
+            "Maserati":"Maserati",
+            "Dodge":"Dodge"
+        }
+        get_category_id = f"""
+        SELECT id FROM `mg_category` WHERE `title` = '{categoty_data["category"]}'
+        """
+        self.cursor.execute(get_category_id)
+    def addnewproduct(self,obj):
+        obj["count"]=0
+        obj["activity"]=1
+        obj["meta_title"]=""
+        obj["meta_keywords"]=""
+        obj["meta_desc"]=""
+        obj["old_price"]=""
+        obj["recommend"]="0"
+        obj["new"]="0"
+        obj["related"]=""
+        obj["inside_cat"]=""
+        obj["weight"]="1"
+        obj["link_electro"]="1"
+        obj["currency_iso"]="USD"
+        obj["price_course"]=""
+        obj["image_title"]=""
+        obj["image_alt"]=""
+        obj["system_set"]="1"
         addnewproduct = f"""
         INSERT mg_product(cat_id,title,description,price,url,image_url,code,count,activity,meta_title,meta_keywords,meta_desc,old_price,recommend,new,related,1c_id,inside_cat,weight,link_electro,currency_iso,price_course,image_title,image_alt,yml_sales_notes,count_buy,system_set,related_cat)
-        VALUES ({cat_id},{title},{description},{price},{url},{image_url},{code},{count},{activity},{meta_title},{meta_keywords},{meta_desc},{old_price},{recommend},{new},{related},"",{inside_cat},{weight},{link_electro},{currency_iso},{price_course},{image_title},{image_alt},NULL,NULL,{system_set},NULL);
+        VALUES ({obj["cat_id"]},{obj["title"]},{obj["description"]},{obj["price"]},{obj["url"]},{obj["image_url"]},{obj["code"]},{obj["count"]},{obj["activity"]},{obj["meta_title"]},{obj["meta_keywords"]},{obj["meta_desc"]},{obj["old_price"]},{obj["recommend"]},{obj["new"]},{obj["related"]},"",{obj["inside_cat"]},{obj["weight"]},{obj["link_electro"]},{obj["currency_iso"]},{obj["price_course"]},{obj["image_title"]},{obj["image_alt"]},NULL,NULL,{obj["system_set"]},NULL);
         """
         self.cursor.execute(addnewproduct)
         lastid = self.cursor.lastrowid

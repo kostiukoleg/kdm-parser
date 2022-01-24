@@ -1,0 +1,450 @@
+<div style="display: none;">
+    <img src="https://doorin.store/mg-plugins/steko-calc/css/calcu/images/left_open.png" /> <img src="https://doorin.store/mg-plugins/steko-calc/css/calcu/images/right_open.png" /> <img src="https://doorin.store/mg-plugins/steko-calc/css/calcu/images/top_open.png" /> <img src="https://doorin.store/mg-plugins/steko-calc/css/calcu/images/moskit.png" />
+</div>
+<div class="calculator_block">
+    <center>
+    <div class="c_sel_constr_type_txt">
+        1 - Выберите тип конструкции
+    </div>
+
+    <div class="table-wrapper">
+        <div class="table-wrapper">
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td valign="top">
+                            <div class="table-wrapper">
+                                <div class="table-wrapper">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td valign="top">
+                                                    <div class="table-wrapper">
+                                                        <div class="table-wrapper">
+                                                            <table border="0" cellpadding="0" cellspacing="0" class="constr_type_table" width="100%">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <img constr_type="1" height="43" src="https://doorin.store/mg-plugins/steko-calc/css/calcu/images/small_wnd1.jpg" width="23" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <img constr_type="2" height="43" src="https://doorin.store/mg-plugins/steko-calc/css/calcu/images/small_wnd2.jpg" width="43" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <img constr_type="3" height="43" src="https://doorin.store/mg-plugins/steko-calc/css/calcu/images/small_wnd3.jpg" width="69" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <img constr_type="4" height="65" src="https://doorin.store/mg-plugins/steko-calc/css/calcu/images/small_wnd4.gif" width="43" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <img constr_type="5" height="65" src="https://doorin.store/mg-plugins/steko-calc/css/calcu/images/small_wnd5.gif" width="63" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <img constr_type="6" height="65" src="https://doorin.store/mg-plugins/steko-calc/css/calcu/images/small_wnd6.jpg" width="23" />
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input id="constr_1" name="small_wnd_radio" type="radio" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <input id="constr_2" name="small_wnd_radio" type="radio" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <input id="constr_3" name="small_wnd_radio" type="radio" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <input checked="checked" id="constr_4" name="small_wnd_radio" type="radio" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <input id="constr_5" name="small_wnd_radio" type="radio" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <input id="constr_6" name="small_wnd_radio" type="radio" />
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" id="main_calc_visual">
+                                                    <div class="sel_params_div">
+                                                        2 - Выберите параметры конструкции:
+                                                    </div>
+
+                                                    <div class="table-wrapper">
+                                                        <div class="table-wrapper">
+                                                            <table border="0" cellpadding="0" cellspacing="0">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td valign="top">
+                                                                            <div class="light_ver_hide">
+                                                                                <!-- блок параметров окна НАЧАЛО -->
+
+<div class="table-wrapper">
+    <div class="table-wrapper">
+        <table border="0" cellpadding="0" cellspacing="0" class="params_table" width="250">
+            <tbody>
+                <tr>
+                    <td class="select_lbl_td">
+                        Тип&nbsp;профиля
+                    </td>
+                    <td class="select_td">
+                        <select id="profil" name="profil"><option value="0">Steko S300</option> <!--		<option value="1">Steko S400</option> --><option value="2">Steko S500</option> <!--   <option value="3">Elite</option>
+    <option value="4">Standart</option>
+    <option value="5">Econom</option> 
+<option value="6">Steko R300</option><option value="7">Steko R500</option>--><option value="8">Steko S600</option><option value="9">Steko S700</option> <!-- <option value="10">Steko R700</option>
+<option value="11">Salamander 2D</option>
+<option value="12">Salamander SL</option> --> </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="select_lbl_td">
+                        Тип&nbsp;стеклопакета
+                    </td>
+                    <td class="select_td">
+                        <select id="steklopaket" name="steklopaket"><option value="0">однокамерный</option><option value="1">двухкамерный</option> </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="select_lbl_td">
+                        Ширина&nbsp;подоконника
+                    </td>
+                    <td class="select_td">
+                        <select id="podokonnik" name="podokonnik"><option value="0">не требуется</option><option value="1">100 мм</option><option value="2">150 мм</option><option value="3">200 мм</option><option value="4">250 мм</option><option value="5">300 мм</option><option value="6">350 мм</option><option value="7">400 мм</option><option value="8">450 мм</option><option value="9">500 мм</option><option value="10">600 мм</option><option value="11">700 мм</option> </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="select_lbl_td">
+                        Ширина&nbsp;отлива
+                    </td>
+                    <td class="select_td">
+                        <select id="otliv" name="otliv"><option value="0">не требуется</option><option value="1">80 мм</option><option value="2">110 мм</option><option value="3">140 мм</option><option value="4">170 мм</option><option value="5">200 мм</option><option value="6">230 мм</option><option value="7">260 мм</option><option value="8">290 мм</option><option value="9">320 мм</option><option value="10">350 мм</option><option value="11">400 мм</option><option value="12">450 мм</option><option value="13">500 мм</option><option value="14">550 мм</option> </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="select_lbl_td">
+                        Ширина&nbsp;откоса
+                    </td>
+                    <td class="select_td">
+                        <select id="otkos" name="otkos"><option value="0">не требуется</option><option value="1">100 мм</option><option value="2">150 мм</option><option value="3">200 мм</option><option value="4">250 мм</option><option value="5">300 мм</option><option value="6">350 мм</option><option value="7">400 мм</option><option value="8">450 мм</option><option value="9">500 мм</option><option value="10">550 мм</option><option value="11">600 мм</option> </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="select_lbl_td">
+                        <label class="calctext" for="mont" style="cursor: pointer;">Монтаж </label>
+                    </td>
+                    <td class="select_td">
+                        <input id="mont" name="mont" type="checkbox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="select_lbl_td" colspan="2">
+                        Стандартный демонтаж старых окон бесплатно
+                    </td>
+                </tr>
+                <tr>
+                    <td class="note_td" colspan="2">
+                        <strong>Подъем на этаж бесплатный. </strong> *<br />
+                        <span>* При отсутствии грузового лифта, а также, если материал не помещается в лифт. Рассчитывается отдельно, 35грн. этаж подъема. </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="note_td" colspan="2">
+                        <strong>Доставка по всей Украине бесплатно при 100% оплате. </strong> **
+                        <div class="error_block">
+                            &nbsp;
+                        </div>
+
+                        <div class="c_price_div">
+                            <p>
+                                Цена: <span class="c_price_span"> 0 <span> грн. </span> </span>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- блок параметров окна КОНЕЦ -->
+</div>
+
+<div class="table-wrapper">
+<div class="table-wrapper">
+    <table border="0" cellpadding="0" cellspacing="0" class="windows_block">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="wnd_vert_size" id="wnd_vert_size" style="display: block;">
+                        <input id="vert_size" maxlength="4" name="vert_size" type="text" />
+                        <div class="wnd_h" id="input_hint" style="display: none;top:45px;">
+                            от 500<br />
+                            до 2300
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="wnd first" id="wnd_1" style="display: block;">
+                        <div class="size_div">
+                            <input id="horiz_size" maxlength="4" name="horiz_size" type="text" />
+                            <div class="width" id="input_hint" style="display: none;top:-30px;">
+                                от 500 до 2200
+                            </div>
+                        </div>
+
+                        <div class="window">
+                            <div class="moskit" style="display: none;">
+                                &nbsp;
+                            </div>
+
+                            <div class="left_open" name="open_type" style="display: none;">
+                                &nbsp;
+                            </div>
+
+                            <div class="right_open" name="open_type" style="display: none;">
+                                &nbsp;
+                            </div>
+
+                            <div class="top_open" name="open_type" style="display: none;">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="wnd" id="wnd_2" style="display: none;">
+                        <div class="size_div">
+                            <input id="horiz_size" maxlength="4" name="horiz_size" type="text" />
+                            <div class="width" id="input_hint" style="display: none;top:-30px;">
+                                от 500 до 2200
+                            </div>
+                        </div>
+
+                        <div class="window">
+                            <div class="moskit" style="display: none;">
+                                &nbsp;
+                            </div>
+
+                            <div class="left_open" name="open_type" style="display: none;">
+                                &nbsp;
+                            </div>
+
+                            <div class="right_open" name="open_type" style="display: none;">
+                                &nbsp;
+                            </div>
+
+                            <div class="top_open" name="open_type" style="display: none;">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="wnd" id="wnd_3" style="display: none;">
+                        <div class="size_div">
+                            <input id="horiz_size" maxlength="4" name="horiz_size" type="text" />
+                            <div class="width" id="input_hint" style="top: -30px;">
+                                от 500 до 2200
+                            </div>
+                        </div>
+
+                        <div class="window">
+                            <div class="moskit" style="display: none;">
+                                &nbsp;
+                            </div>
+
+                            <div class="left_open" name="open_type" style="display: none;">
+                                &nbsp;
+                            </div>
+
+                            <div class="right_open" name="open_type" style="display: none;">
+                                &nbsp;
+                            </div>
+
+                            <div class="top_open" name="open_type" style="display: none;">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="balcony" id="balcony" style="display: block;">
+                        <div class="size_div" style="background-position: -1px 2px;">
+                            <input id="horiz_size" maxlength="4" name="horiz_size" type="text" />
+                            <div class="width" id="input_hint" style="display: none;top:-30px;">
+                                от 500 до 1300
+                            </div>
+                        </div>
+
+                        <div class="door">
+                            &nbsp;
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="balcony_vert_size" id="balcony_vert_size" style="display: block;">
+                        <input id="vert_size" maxlength="4" name="vert_size" type="text" />
+                        <div class="balcony_h" id="input_hint" style="display: none;top: 85px;">
+                            от 1800<br />
+                            до 2200
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+
+<div class="light_ver_hide">
+<div class="open_type_block" style="display: block;">
+    <div class="c_sel_open_type_txt">
+        3 - Выберите тип открывания:
+    </div>
+
+    <div class="c_sel_open_type_txt_note">
+        Москитная сетка не может быть установлена<br />
+        на глухую створку.
+    </div>
+</div>
+
+<div class="table-wrapper">
+    <div class="table-wrapper">
+        <table border="0" cellpadding="0" cellspacing="0" class="open_type_table">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="open_type" id="open_type_1" style="display: block;" wnd_id="1">
+                            <div class="t" id="t1" marked="1" title="Глухая створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="t" id="t2" style="border: 0px; top: 47px; left: 0px;" title="Поворотная створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="t" id="t3" style="border: 0px; top: 47px; left: 27px;" title="Поворотная створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="t" id="t4" style="border: 0px; top: 94px; left: 0px;" title="Поворотно-откидная створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="t" id="t5" style="border: 0px; top: 94px; left: 27px;" title="Поворотно-откидная створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="moskit m_inactive" moskit_on="0">
+                                Москитная сетка
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="open_type" id="open_type_2" style="display: none;" wnd_id="2">
+                            <div class="t" id="t1" marked="1" title="Глухая створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="t" id="t2" style="border: 0px; top: 47px; left: 0px;" title="Поворотная створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="t" id="t3" style="border: 0px; top: 47px; left: 27px;" title="Поворотная створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="t" id="t4" title="Поворотно-откидная створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="t" id="t5" title="Поворотно-откидная створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="moskit m_inactive" moskit_on="0">
+                                Москитная сетка
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="open_type" id="open_type_3" style="display: none;" wnd_id="3">
+                            <div class="t" id="t1" marked="1" title="Глухая створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="t" id="t2" title="Поворотная створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="t" id="t3" title="Поворотная створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="t" id="t4" title="Поворотно-откидная створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="t" id="t5" title="Поворотно-откидная створка">
+                                &nbsp;
+                            </div>
+
+                            <div class="moskit m_inactive" moskit_on="0">
+                                Москитная сетка
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div id="spacer_div" style="width: 134px;">
+                            &nbsp;
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+
+<div align="center" style="padding: 20px 0px; margin-top: 20px; padding-left: 50px;">
+<!--<div class="c_buy_now_btn" style="float: left; height: 40px;">
+<a id="order_btn" class="option" title="Заказ окна" href="/order_wnd.php" onclick="javascript:window.open('/order_wnd.php','photo_wnd','width=720,height=550,resizable=yes,scrollbars=yes, location=no,menubar=no,status=no,toolbar=no'); return false;" target="_blank">
+<img src="css/calcu/images/order_btn1.gif" onmouseover="this.src='css/calcu/images/order_btn.gif'" onmouseout="this.src='css/calcu/images/order_btn1.gif'" alt="Заказать прямо сейчас" border="0" height="54" width="168">
+</a>
+</div>-->
+<div class="c_recount_btn_div" style="margin-left: 200px;">
+    <div id="recalc_btn" onmouseout="this.style.backgroundPosition='0px 0px'" onmouseover="this.style.backgroundPosition='0px -93px'" style="background-position: 0px 0px;">
+        &nbsp;
+    </div>
+</div>
+</div>
+
+<div style="display: none;">
+<textarea cols="70" id="order_content" rows="15">Параметры не указаны.
+</textarea>
+</div>
+<div class="table-wrapper">
+    <table border="0" cellpadding="0" cellspacing="0" style="padding-left: 0px;" width="100%">
+        <tbody>
+            <tr>
+                <td class="page_text">
+                    <script type="text/javascript">var light_ver = false;</script><script type="text/javascript">
+                            var C_meter = new Array(545,589,990);
+                            var K_mont = new Array(0.88,0.95);
+                            var K_steklopaket = new Array(1,1.17);
+                            var K_profil = new Array(2.75,3.1,2.85,6.68,7.31,6.21,3.25,3.25,3.15,3.45,2.52,3.61,4.32);
+                            var C_metr_mosk_setka = 350;
+                            var C_podokonnik = new Array(0,100,125,150,175,200,225,250,275,300,350,400);
+                            var C_otliv = new Array(0,52,62,74,83,93,103,113,124,134,144,161,178,195,213);
+                            var C_otkos = new Array(0,45,56,67,79,90,101,112,123,134,145,156);
+                        </script>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<link href="https://doorin.store/mg-plugins/steko-calc/css/calc.css" rel="stylesheet" type="text/css" /><script type="text/javascript" src="https://doorin.store/mg-plugins/steko-calc/js/calc_script.js"></script>

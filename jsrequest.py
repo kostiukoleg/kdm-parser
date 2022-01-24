@@ -177,9 +177,9 @@ def fetch(url):
     session = HTMLSession()
     session.headers.update({'User-Agent': fake_useragent.UserAgent().random})
     #session.max_redirects = 10
-    print('parsing from proxy')
-    proxy = { 'http': 'http://' + choice(read_file("proxies.txt","\n")) +'/' }
-    session.proxies.update(proxy)
+    #print('parsing from proxy')
+    #proxy = { 'http': 'http://' + choice(read_file("proxies.txt","\n")) +'/' }
+    #session.proxies.update(proxy)
     time.sleep(uniform(1,6))
     try:
         r = session.request('GET', url)

@@ -22,9 +22,13 @@ config = configparser.ConfigParser(allow_no_value=True)
 config.read("settings.ini")
 
 class JSParser:
+    session=None
     def __init__(self):
-        #self.user = fake_useragent.UserAgent().random
-        self.session = HTMLSession()
+        if self.session is None:
+            self.session = HTMLSession()
+            self.session.headers.update({
+                'User-Agent': fake_useragent.UserAgent().random
+                })
         if(config['GLOVIS']['FTPCODE'] == '1'):
             self.ftp = FTP("217.172.189.14")
             self.ftp.login("olegk202","lYgH51teND")
@@ -173,84 +177,62 @@ class JSParser:
     def login(self, login_link):
         try:
             self.session.headers.update({
-                'Accept': 'application/json, text/javascript, */*; q=0.01',
-                'Accept-Encoding':'gzip, deflate, br',
-                'Accept-Language': 'en-GB,en;q=0.9',
-                'Cache-Control': 'no-cache',
-                'Connection': 'keep-alive',
-                #'Content-Length': '57',
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                'DNT': '1',
-                'Host':'www.glovisaa.com',
-                'Origin': 'https://www.glovisaa.com',
-                'Pragma': 'no-cache',
-                'Referer': 'https://www.glovisaa.com/login.do?returnUrl=jh2ISr6qitW90ERi3vig%2BXa%2B%2F2AbjWqZ%2FX5jbcCGxss%3D',
-                'sec-ch-ua': '"Chromium";v="92", " Not A;Brand";v="99", "Microsoft Edge";v="92"',
-                'sec-ch-ua-mobile': '?0',
-                'Sec-Fetch-Site': 'same-origin',
-                'Sec-Fetch-Mode': 'cors',
-                'Sec-Fetch-Dest': 'empty',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36 Edg/92.0.902.55',
                 'X-Requested-With': 'XMLHttpRequest'
                 })
             login_data = {
                 "passno": "amo1NTA3Kio=",
-                "idsaveyn": "Y",
                 "id": "4292"
             }
-            r = self.session.request('POST', login_link, login_data, allow_redirects=False)
+            r = self.session.post(login_link, login_data)
             if(r.status_code == 200):
-                print("LOGIN TRUE")
                 return r.html
             else:
-                print("LOGIN FALSE")
                 return r.status_code
         except Exception as e:
             print('Can\'t get HTML form %s. Reason %s.' % (login_link, e))
 
 #витягивание куки с ответа      
     def fetch(self, url, rend=0, prox=0):
-        self.session.headers.update({'User-Agent': fake_useragent.UserAgent().random})
+        #self.session.headers.update({'User-Agent': fake_useragent.UserAgent().random})
         data = ''
-        #p = current_process()
-        # if(p.name != 'MainProcess' and p._identity[0] and os.getpid()):
-        #     print('process counter:', p._identity[0], 'pid:', os.getpid())
-        #if(prox != 0):
+        p = current_process()
+        if(p.name != 'MainProcess' and p._identity[0] and os.getpid()):
+            print('process counter:', p._identity[0], 'pid:', os.getpid())
+        if(prox != 0):
             #parsing from proxy
-            # print("parsing from proxy")
-            # proxy = { 'http': 'http://' + choice(self.read_file("proxies.txt","\n")) +'/' }
-            # self.session.proxies.update(proxy)
+            print("parsing from proxy")
+            proxy = { 'http': 'http://' + choice(self.read_file("proxies.txt","\n")) +'/' }
+            self.session.proxies.update(proxy)
         try:
-            r = self.session.request('GET', url, allow_redirects=False)
+            r = self.session.get(url)
             time.sleep(uniform(3,6))
             if(r.status_code == 200 or r.status_code == 302):
-                # if(rend != 0):
-                #     r.html.render(timeout=00)
+                if(rend != 0):
+                    r.html.render(timeout=3)
                 data = r.html
             else:
                 data = r.status_code
         except Exception as e:
-            print('Failed to get page %s. Reason: %s' % (url, e))
+            print('Failed to get page.')
+            #print('Failed to get page %s. Reason: %s' % (url, e))
         return data
 #витягуємо максимальне число сторінок
     def get_max_page(self, html, pages=10):
         try:
             if(int(html.find("div.boarddv p.sti3 span.inlne span")[3].text) % pages > 0):
-                print("IF TUE ERROR")
                 return int(int(html.find("div.boarddv p.sti3 span.inlne span")[3].text)/pages) + 1
             else:
-                print("ELSE ERROR")
                 return int(int(html.find("div.boarddv p.sti3 span.inlne span")[3].text)/pages)
         except Exception as e:
-            print('Can\'t get max page.')# Reason %s' % e
+            print('Can\'t get max page.') #Reason %s' % e)
 
 #витягуємо дату аукціону
     def get_auction_date(self, html):
         try:
+            print(html.find("div.boarddv p.sti3 span.inlne span", first=True).full_text)
             return "{}/{}/{}".format(str(html.find("div.boarddv p.sti3 span.inlne span")[0].text), str(html.find("div.boarddv p.sti3 span.inlne span")[1].text), str(html.find("div.boarddv p.sti3 span.inlne span")[2].text))
         except Exception as e:
-            print('Can\'t get auction date.')
-            #print('Can\'t get auction date. Reason %s' % e)
+            print('Can\'t get auction date.') #Reason %s' % e)
 
 #витягивание карти повреждений
     def get_car_img(self, html):
@@ -478,7 +460,8 @@ class JSParser:
                     "Volvo":"Volvo",
                     "Citroen":"Citroen",
                     "Infinity":"Infinity",
-                    "Maserati":"Maserati"
+                    "Maserati":"Maserati",
+                    "Dodge":"Dodge"
                 }
             try:
                 if(len(html.find("p.carnm"))):
@@ -857,7 +840,8 @@ class JSParser:
                     "Chrysler":"chrysler",
                     "Citroen":"citroen",
                     "Infinity":"infinity",
-                    "Maserati":"maserati"
+                    "Maserati":"maserati",
+                    "Dodge":"dodge"
                 }
             try:
                 if(self.get_car_category(html)):
