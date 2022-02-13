@@ -22,13 +22,9 @@ config = configparser.ConfigParser(allow_no_value=True)
 config.read("settings.ini")
 
 class JSParser:
-    session=None
     def __init__(self):
-        if self.session is None:
-            self.session = HTMLSession()
-            self.session.headers.update({
-                'User-Agent': fake_useragent.UserAgent().random
-                })
+        #self.user = fake_useragent.UserAgent().random
+        self.session = HTMLSession()
         if(config['GLOVIS']['FTPCODE'] == '1'):
             self.ftp = FTP("217.172.189.14")
             self.ftp.login("olegk202","lYgH51teND")
@@ -66,6 +62,7 @@ class JSParser:
             else: 
                 new_text = self.ko_translate(text, lang)
             return new_text
+
 #створюємо папку
     def create_folder(self, path):
         try:
@@ -73,6 +70,7 @@ class JSParser:
                 os.makedirs(path)
         except Exception as e:
             print('Can\'t create folder in path %s. Reason %s' % path, e)
+
 #очищаємо усі файли із папки
     def clear_folder(self, folder):
         for filename in os.listdir(folder):
@@ -84,6 +82,7 @@ class JSParser:
                     shutil.rmtree(file_path)
             except Exception as e:
                 print('Failed to delete %s. Reason: %s' % (file_path, e))
+
 #удаляємо всі зайві пробіли, переноси строк і табуляції
     def rm_new_line(self, string):
         try:
@@ -143,33 +142,33 @@ class JSParser:
                     print('Failed to clear image name. Reason: %s' % e)
 
 #очистка назв авто от непонятних символов
-    def clear_car_name(self, car_name):
+    def clear_str(self, text_str):
         try:
-            if(isinstance(car_name, str) and car_name != ''):
-                car_name = re.sub("\.","-",car_name)
-                car_name = re.sub("\(","",car_name)
-                car_name = re.sub("\)","",car_name)
-                car_name = re.sub("\{","",car_name)
-                car_name = re.sub("\}","",car_name)
-                car_name = re.sub("\[","",car_name)
-                car_name = re.sub("\]","",car_name)
-                car_name = re.sub("\<","",car_name)
-                car_name = re.sub("\>","",car_name)
-                car_name = re.sub("\$","",car_name)
-                car_name = re.sub("\#","",car_name)
-                car_name = re.sub("\%","",car_name)
-                car_name = re.sub("\~","",car_name)
-                car_name = re.sub("\@","",car_name)
-                car_name = re.sub("\^","",car_name)
-                car_name = re.sub("\&","",car_name)
-                car_name = re.sub("\*","",car_name)
-                car_name = re.sub("\+","",car_name)
-                car_name = re.sub("\=","",car_name)
-                car_name = re.sub("\,","",car_name)
-                car_name = re.sub("\"","",car_name)
-                car_name = re.sub("\'","",car_name)
-                car_name = re.sub("\/","",car_name)
-            return car_name
+            if(isinstance(text_str, str) and text_str != ''):
+                text_str = re.sub("\.","-",text_str)
+                text_str = re.sub("\(","",text_str)
+                text_str = re.sub("\)","",text_str)
+                text_str = re.sub("\{","",text_str)
+                text_str = re.sub("\}","",text_str)
+                text_str = re.sub("\[","",text_str)
+                text_str = re.sub("\]","",text_str)
+                text_str = re.sub("\<","",text_str)
+                text_str = re.sub("\>","",text_str)
+                text_str = re.sub("\$","",text_str)
+                text_str = re.sub("\#","",text_str)
+                text_str = re.sub("\%","",text_str)
+                text_str = re.sub("\~","",text_str)
+                text_str = re.sub("\@","",text_str)
+                text_str = re.sub("\^","",text_str)
+                text_str = re.sub("\&","",text_str)
+                text_str = re.sub("\*","",text_str)
+                text_str = re.sub("\+","",text_str)
+                text_str = re.sub("\=","",text_str)
+                text_str = re.sub("\,","",text_str)
+                text_str = re.sub("\"","",text_str)
+                text_str = re.sub("\'","",text_str)
+                text_str = re.sub("\/","",text_str)
+            return text_str
         except Exception as e:
             print('Failed to clear car name. Reason: %s' % e)
 
@@ -177,13 +176,32 @@ class JSParser:
     def login(self, login_link):
         try:
             self.session.headers.update({
+                'Accept': 'application/json, text/javascript, */*; q=0.01',
+                'Accept-Encoding':'gzip, deflate, br',
+                'Accept-Language': 'en-GB,en;q=0.9',
+                'Cache-Control': 'no-cache',
+                'Connection': 'keep-alive',
+                #'Content-Length': '57',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'DNT': '1',
+                'Host':'www.glovisaa.com',
+                'Origin': 'https://www.glovisaa.com',
+                'Pragma': 'no-cache',
+                'Referer': 'https://www.glovisaa.com/login.do?returnUrl=jh2ISr6qitW90ERi3vig%2BXa%2B%2F2AbjWqZ%2FX5jbcCGxss%3D',
+                'sec-ch-ua': '"Chromium";v="92", " Not A;Brand";v="99", "Microsoft Edge";v="92"',
+                'sec-ch-ua-mobile': '?0',
+                'Sec-Fetch-Site': 'same-origin',
+                'Sec-Fetch-Mode': 'cors',
+                'Sec-Fetch-Dest': 'empty',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36 Edg/92.0.902.55',
                 'X-Requested-With': 'XMLHttpRequest'
                 })
             login_data = {
                 "passno": "amo1NTA3Kio=",
+                "idsaveyn": "Y",
                 "id": "4292"
             }
-            r = self.session.post(login_link, login_data)
+            r = self.session.request('POST', login_link, login_data, allow_redirects=False)
             if(r.status_code == 200):
                 return r.html
             else:
@@ -193,29 +211,30 @@ class JSParser:
 
 #витягивание куки с ответа      
     def fetch(self, url, rend=0, prox=0):
-        #self.session.headers.update({'User-Agent': fake_useragent.UserAgent().random})
+        self.session.headers.update({'User-Agent': fake_useragent.UserAgent().random})
         data = ''
         p = current_process()
         if(p.name != 'MainProcess' and p._identity[0] and os.getpid()):
             print('process counter:', p._identity[0], 'pid:', os.getpid())
-        if(prox != 0):
+        #if(prox != 0):
             #parsing from proxy
-            print("parsing from proxy")
-            proxy = { 'http': 'http://' + choice(self.read_file("proxies.txt","\n")) +'/' }
-            self.session.proxies.update(proxy)
+            #print("parsing from proxy")
+            #proxy = { 'http': 'http://' + choice(self.read_file("proxies.txt","\n")) +'/' }
+            #self.session.proxies.update(proxy)
         try:
-            r = self.session.get(url)
+            r = self.session.request('GET', url, allow_redirects=False)
             time.sleep(uniform(3,6))
             if(r.status_code == 200 or r.status_code == 302):
                 if(rend != 0):
-                    r.html.render(timeout=3)
+                    r.html.render(timeout=00)
                 data = r.html
             else:
                 data = r.status_code
         except Exception as e:
-            print('Failed to get page.')
-            #print('Failed to get page %s. Reason: %s' % (url, e))
+            print('Failed to get page %s. Reason: %s' % (url, e))
+            self.fetch(url)
         return data
+
 #витягуємо максимальне число сторінок
     def get_max_page(self, html, pages=10):
         try:
@@ -224,15 +243,14 @@ class JSParser:
             else:
                 return int(int(html.find("div.boarddv p.sti3 span.inlne span")[3].text)/pages)
         except Exception as e:
-            print('Can\'t get max page.') #Reason %s' % e)
+            print('Can\'t get max page. Reason %s' % e)
 
 #витягуємо дату аукціону
     def get_auction_date(self, html):
         try:
-            print(html.find("div.boarddv p.sti3 span.inlne span", first=True).full_text)
             return "{}/{}/{}".format(str(html.find("div.boarddv p.sti3 span.inlne span")[0].text), str(html.find("div.boarddv p.sti3 span.inlne span")[1].text), str(html.find("div.boarddv p.sti3 span.inlne span")[2].text))
         except Exception as e:
-            print('Can\'t get auction date.') #Reason %s' % e)
+            print('Can\'t get auction date. Reason %s' % e)
 
 #витягивание карти повреждений
     def get_car_img(self, html):
@@ -420,7 +438,12 @@ class JSParser:
         if(html != ''):
             try:
                 if(len(html.find("p.carnm"))):
-                    title = re.sub("\?", "", self.clear_car_name(self.ko_translate(html.find("p.carnm")[0].text, "en")))  
+                    title = str(self.ko_translate(html.find("p.carnm")[0].text, "en"))
+                    lot_id = self.get_lot_id(html)
+                    car_vin = self.get_car_vin(html)
+                    title = f"{lot_id} {title} {car_vin}"  
+                    title = re.sub("\[", "", title)
+                    title = re.sub("\]", "", title)
                     return title
                 else:
                     return "None"
@@ -433,6 +456,7 @@ class JSParser:
         if(html != ''):
             categoty_data = {
                     "Genesis":"Genesis",
+                    "Kia Motors":"Kia Motors",
                     "Kia":"Kia Motors",
                     "Hyundai":"Hyundai",
                     "Modern":"Hyundai",
@@ -450,6 +474,7 @@ class JSParser:
                     "Nissan":"Nissan",
                     "Jeep":"Jeep",
                     "Lexus":"Lexus",
+                    "Honda":"Honda",
                     "Lincoln":"Lincoln",
                     "Mini":"Mini Cooper",
                     "Cadillac":"Cadillac",
@@ -469,7 +494,7 @@ class JSParser:
                     if(res):
                         res = res.group(1)
                         category = res[1:-1]
-                        print(category)
+                        #print(category)
                         return categoty_data[category]
             except Exception as e:
                 print('Can\'t get car category. Reason %s.' % e)
@@ -771,7 +796,10 @@ class JSParser:
                 }
             try:
                 if(len(html.find("p.carnm"))):
-                    title = self.clear_car_name(self.ko_translate(html.find("p.carnm")[0].text, "en"))
+                    title = self.ko_translate(html.find("p.carnm")[0].text, "en")
+                    title = re.findall(r'\[(.+)\]',title)[0]
+                    title = re.sub("(", "", title)
+                    title = re.sub(")", "", title)
                     title = re.sub(" All New", "", title)
                     title = re.sub(" The New", "", title)
                     title = re.sub(" The Next", "", title)
@@ -781,6 +809,7 @@ class JSParser:
                     title = re.sub("ChevroletDaewoo", "Chevrolet", title)
                     title = re.sub(" Daewoo", "", title)
                     title_arr = title.split()
+                    print(title_arr)
                     car_model = categoty_data[str(title_arr[0])]
             except Exception as e:
                 print('Can\'t get car mark. Reason %s.' % e)
@@ -901,10 +930,9 @@ class JSParser:
         try:
             img_ext = 'jpg'
             title = self.get_car_title(html)
-            name = self.clear_car_name(title)
+            name = self.clear_car_str(title)
             name = name.lower()
             name = re.sub("\s","_", name)
-            name = self.get_lot_id(html)+"_"+name
             img_str = ''
             for i, img in enumerate(imgs) :
                 img_str += name+'_'+str(i)+'.'+img_ext+'[:param:][alt='+title+'][title='+title+']|'
@@ -955,10 +983,9 @@ class JSParser:
         time.sleep(uniform(1,2))
         try:
             img_ext = 'jpg'
-            title = self.clear_car_name(self.get_car_title(html))
+            title = self.clear_str(self.get_car_title(html))
             title = title.lower()
             title = re.sub("\s","_", title)
-            title = self.get_lot_id(html)+"_"+title
             if(isinstance(img_urls, list)):
                 for i, img_url in enumerate(img_urls):          
                     img_name = title+"_"+str(i)+"."+img_ext
@@ -1060,7 +1087,7 @@ class JSParser:
             car['currency'] = 'USD'
             car['recomended'] = '0'
             car['new'] = '0'
-            car['article'] = self.get_lot_id(html)
+            car['article'] = lot_number
             car['properties'] = 'Цвет=[type=assortmentCheckBox value=%s product_margin=Синий|Желтый|Белый|Серебро|Красный|Фиолетовый|Оранжевый|Зеленый|Серый|Золото|Коричневый|Голубой|Черный|Бежевый]&Кузов=[type=assortmentCheckBox value=%s product_margin=Универсал|Фургон|Фура|Трактор|Седан|Родстер|Пикап|Мотоцикл|Минивен|Хэтчбек|Кроссовер|Купе|Кабриолет|Багги]&Пробег=%s&Двигатель=%s&Год=%s&Первая регистрация=%s&Трансмиссия=[type=assortmentCheckBox value=%s product_margin=Механика|Автомат]&Топливо=[type=assortmentCheckBox value=%s product_margin=Дизель|Бензин|Газ]&Модель=%s&Марка=%s&Номер лота=%s&Оценка автомобиля=%s&VIN номер=%s&Аукцион=glovisaauction %s' % (color, car_type, distance_driven, displacement, year, car_registration, transmission, fuel, mark, category, lot_number, car_estimate, car_vin, config['GLOVIS']['DATE'])
             self.write_csv(car)
             self.download_images(html, self.get_img_src(html))
@@ -1085,8 +1112,9 @@ class JSParser:
                     print("LOT ID", lot_id)
                 except Exception as e:
                     print('Can\'t get lot id. Reason %s.' % e)
+                    lot_id = ''
                 try:
-                    car_name = self.clear_car_name(self.ko_translate(item.find("div.txt div.ti a.btn_view")[0].text, "en"))
+                    car_name = self.clear_str(self.ko_translate(item.find("div.txt div.ti a.btn_view")[0].text, "en"))
                     print("CAR NAME", car_name)
                 except Exception as e:
                     print('Can\'t get car name. Reason %s.' % e)
@@ -1109,7 +1137,7 @@ class JSParser:
                         print("MISSED CAR ID:" ,lot_id, "Car name:", car_name)
                         if car_id:
                             self.write_car_id("missed_car_id3.txt", car_id+"\n")
-                    elif(car_price != 0):
+                    elif(car_price != 0 or car_price != 8):
                         for row in result:
                             if (row[1] == 0):
                                 print("Car price:", car_price, "Car id:", row[0], "Car Title:", row[2])

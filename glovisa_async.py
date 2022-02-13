@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+from weakref import proxy
 from async_timeout import asyncio
 from random import uniform, choice
 from deep_translator import GoogleTranslator
+from addnewproduct import AddNewProduct
 from datetime import datetime
 import requests
 import aiofiles
@@ -19,8 +21,10 @@ config = configparser.ConfigParser(allow_no_value=True)
 config.read("settings.ini")
 
 class GlovisaAsync:
+    add_p = AddNewProduct()
     sema = asyncio.BoundedSemaphore(5)
-    #записуємо усі данні у файл
+
+    # записуємо усі данні у файл
     def write_csv(self, data, name = "data3.csv"):
         path = os.getcwd() + os.path.sep + name
         try: 
@@ -29,20 +33,23 @@ class GlovisaAsync:
                 writer.writerow([data['category'], data['category_url'], data['title'], ' ', data['description'], data['price'], data['url'], data['images'], data['article'], data['count'], data['activation'], data['title-seo'], ' ', ' ', ' ', data['recomended'], data['new'], '0', '0', ' ', ' ', ' ', data['currency'], data['properties']])
         except Exception as e:
             print('Can\'t write csv file. Reason %s' % e)
-    #translate function 
+
+    # translate function
     def ko_translate(self, text, lan):
         try:
             if(len(text)>1 and len(text)<5000 and isinstance(text,str)):
                 return GoogleTranslator(source='ko', target=lan).translate(text)
         except Exception as e:
             print('Failed to Translate text. Reason: %s' % e)
-    #read file function 
+
+    # read file function
     def read_file(self, file_name, delimiter="\n"):
         try:
             return open(file_name).read().split(delimiter)
         except Exception as e:
             print('Can\'t read File.')
-    #get data function       
+
+    # get data function
     async def fetch(self, url):
         proxy = { 'http': 'http://' + choice(self.read_file("proxies.txt","\n")) +'/' }
         self.asession.proxies.update(proxy)
@@ -52,44 +59,47 @@ class GlovisaAsync:
             return r
         except Exception as e:
             print('Fatch ERROR %s' % e)
+
     def get_category(self, title):
         categoty_data = {
-            "Porsche":"Porsche",
-            "Genesis":"Genesis",
-            "Kia":"Kia Motors",
-            "Hyundai":"Hyundai",
-            "Modern":"Hyundai",
-            "Ssangyong":"SsangYong",
-            "Renault Samsung":"Renault",
-            "Renault":"Renault",
-            "Benz":"Mercedes Benz",
-            "Chevrolet":"Chevrolet",
-            "Chevrolet (Daewoo)":"Chevrolet",
-            "Jaguar":"Jaguar",
-            "BMW":"BMW",
-            "Land Rover":"Land Rover",
-            "Peugeot":"Peugeot",
-            "Volkswagen":"Volkswagen",
-            "Ford":"Ford",
-            "Nissan":"Nissan",
-            "Jeep":"Jeep",
-            "Lexus":"Lexus",
-            "Honda":"Honda",
-            "Lincoln":"Lincoln",
-            "Mini":"Mini Cooper",
-            "Cadillac":"Cadillac",
-            "Toyota":"Toyota",
-            "Tesla":"Tesla",
-            "Audi":"Audi",
-            "Chrysler":"Chrysler",
-            "Volvo":"Volvo",
-            "Citroen":"Citroen",
-            "Infinity":"Infinity",
-            "Maserati":"Maserati",
-            "Dodge":"Dodge"
+            "Porsche": "Porsche",
+            "Genesis": "Genesis",
+            "Kia": "Kia Motors",
+            "Hyundai": "Hyundai",
+            "Modern": "Hyundai",
+            "Ssangyong": "SsangYong",
+            "SsangYong": "SsangYong",
+            "Renault Samsung": "Renault",
+            "Renault": "Renault",
+            "Benz": "Mercedes Benz",
+            "Chevrolet": "Chevrolet",
+            "Chevrolet (Daewoo)": "Chevrolet",
+            "Jaguar": "Jaguar",
+            "BMW": "BMW",
+            "Land Rover": "Land Rover",
+            "Peugeot": "Peugeot",
+            "Volkswagen": "Volkswagen",
+            "Ford": "Ford",
+            "Nissan": "Nissan",
+            "Jeep": "Jeep",
+            "Lexus": "Lexus",
+            "Honda": "Honda",
+            "Lincoln": "Lincoln",
+            "Mini": "Mini Cooper",
+            "Cadillac": "Cadillac",
+            "Toyota": "Toyota",
+            "Tesla": "Tesla",
+            "Audi": "Audi",
+            "Chrysler": "Chrysler",
+            "Volvo": "Volvo",
+            "Citroen": "Citroen",
+            "Infinity": "Infinity",
+            "Maserati": "Maserati",
+            "Dodge": "Dodge"
         }
         category = re.findall(r'\[(.+)\]',title)[0]
         return categoty_data[category]
+
     def get_category_url(self, category):
         categoty_url_data = {
             "Porsche":"porsche",
@@ -124,6 +134,7 @@ class GlovisaAsync:
             "Dodge":"dodge"
         }
         return categoty_url_data[category]
+
     #цвет автомобиля
     def get_car_color(self, car_color):
         color_data = {
@@ -272,9 +283,11 @@ class GlovisaAsync:
             "WAW)폴라 화이트":"Белый",
             "7U)진청색투톤":"Синий",
             "YAW)크리미화이트":"Белый",
-            "SSS)세빌실버":"Серебро" 
+            "SSS)세빌실버":"Серебро",
+            "PDW)퓨어화이트":"Белый"
         }
         return color_data[car_color]
+
     def get_car_type(self, type):
         car_type_data = {
             "3인승":"Фургон",
@@ -311,6 +324,7 @@ class GlovisaAsync:
             # "Багги"
         }
         return car_type_data[type]
+
     #марка авто
     def get_car_mark(self, title):
         try:
@@ -347,12 +361,14 @@ class GlovisaAsync:
             for row in result:
                 if(row[0]):
                     return row[0]
+
     def get_car_mark_url(self, car_mark):
         car_mark_url = re.sub("\.", "", car_mark)            
         car_mark_url = re.sub("\(", "", car_mark_url)                                
         car_mark_url = re.sub("\)", "", car_mark_url)
         car_mark_url = re.sub("\s", "-", car_mark_url)
         return car_mark_url.lower()
+
     def download_images(self, img_urls, title, folder_name='py_img3'):
         time.sleep(uniform(1,2))
         try:
@@ -367,19 +383,23 @@ class GlovisaAsync:
                         handler.write(img_data)
         except Exception as e:
             print('Failed download image. Reason: %s' % e)
+
     #асинхронна скачка файла    
-    async def fetch_file(self, img_url, title, i):
-        title = self.clear_str(title)
-        title = re.sub("\s", "_", title)
-        title = f"{title.lower()}_{i}.jpg"
-        async with self.sema, aiohttp.ClientSession() as session:
-            async with session.get(img_url) as resp:
-                assert resp.status == 200
-                data = await resp.read()
-        async with aiofiles.open(
-            os.path.join('py_img3', title), "wb"
-        ) as outfile:
-            await outfile.write(data)
+    async def fetch_files(self, img_urls, title):
+        if(isinstance(img_urls, list)):
+            title = self.clear_str(title)
+            title = re.sub("\s", "_", title)
+            title = title.lower()
+            for i, img_url in enumerate(img_urls):  
+                async with self.sema, aiohttp.ClientSession() as session:
+                    async with session.get(img_url) as resp:
+                        if(resp.status == 200):
+                            data = await resp.read()
+                            async with aiofiles.open(
+                                os.path.join('py_img3', title+"_"+str(i)+".jpg"), "wb"
+                            ) as outfile:
+                                await outfile.write(data)
+
     #очистка назв авто от непонятних символов
     def clear_str(self, text_str):
         try:
@@ -410,6 +430,7 @@ class GlovisaAsync:
             return text_str
         except Exception as e:
             print('Failed to clear car name. Reason: %s' % e)
+
     #перетвоюємо ссилки на картинки у строки для запису в файл csv
     def get_img_str(self, imgs, title):
         try:
@@ -418,14 +439,17 @@ class GlovisaAsync:
             name = name.lower()
             name = re.sub("\s","_", name)
             img_str = ''
+            img_alt = ''
             for i, img in enumerate(imgs) :
-                img_str += name+'_'+str(i)+'.'+img_ext+'[:param:][alt='+title+'][title='+title+']|'
-            return img_str[:-1]
+                #img_str += name+'_'+str(i)+'.'+img_ext+'[:param:][alt='+title+'][title='+title+']|'
+                img_str += name+'_'+str(i)+'.'+img_ext+'|'
+                img_alt += title+'|'
+            return img_str[:-1], img_alt[:-1]
         except Exception as e:
             print('Can\'t get Images str. Reason %s' % e)
             return ""
+
     async def fetch_content(self, url, session):
-        #await asyncio.sleep(uniform(2,6))
         login_data = {
             "passno": "amo1NTA3Kio=",
             "id": "4292"
@@ -435,7 +459,7 @@ class GlovisaAsync:
             'User-Agent': fake_useragent.UserAgent().random
             }
         try:
-            async with session.post(config['GLOVIS']['LOGIN_LINK'], data=login_data, headers=headers, timeout=60) as response:
+            async with session.post(config['GLOVIS']['LOGIN_LINK'], data=login_data, headers=headers, timeout=1000) as response:
                 if (response.status == 200):
                     data = json.loads(await response.text())
                     # if(data["result"]["status"] == True):
@@ -445,8 +469,9 @@ class GlovisaAsync:
         except Exception as e:
             print('LOGIN ERROR %s. URL %s' % (e,url))
         try:
+            await asyncio.sleep(uniform(3,6))
             #proxy_url = 'http://' + choice(self.read_file("proxies.txt","\n"))
-            async with session.get(url, allow_redirects=True, timeout=60) as response:
+            async with session.get(url, allow_redirects=True, timeout=1000) as response:
                 car={}
                 car['count'] = '0'
                 car['activation'] = '1'
@@ -458,14 +483,18 @@ class GlovisaAsync:
                     data = await response.text()
                     try:
                         car['article'] = re.findall(r'<span\sclass=\"nm\">(.+)<\/span>',data)[0]
+                        car['lot_number'] = car['article'] 
                     except Exception as e:
                         print('CODE ERROR %s. URL %s' % (e,url))
                         car['article'] = ''
+                        car['lot_number'] = car['article']
                     try:
                         car_vin = re.findall(r'<li>\s?<span>차대번호<\/span>\s?<span>(.+)<\/span>\s?<\/li>',data)[0]
+                        car['car_vin'] = car_vin
                     except Exception as e:
                         print('CAR VIN ERROR %s. URL %s' % (e,url))
                         car_vin = ''
+                        car['car_vin'] = car_vin
                     try:
                         title = str(self.ko_translate(re.findall(r'<p\sclass=\"carnm\">(.+)<\/p>',data)[0], "en"))
                         car['title'] = f"{car['article']} {title} {car_vin}"
@@ -475,32 +504,45 @@ class GlovisaAsync:
                         print('TITLE ERROR %s. URL %s' % (e,url))
                         car['title'] = ''
                     car['title-seo'] = car['title']
+                    car["meta_title"]=car['title']
+                    car["meta_keywords"]=car['title']
+                    car["meta_desc"]=car['title']
                     car_mark = self.get_car_mark(title)
+                    car["mark"] = car_mark
                     try:
                         car['price'] = int(int(float(re.findall(r'<span\sclass=\"nm\">(.+)<\/span>',data)[2].replace(",", "")))*10000/int(config['GLOVIS']['USD']))
+                        car["price_course"]=car['price']
                     except Exception as e:
                         print('PRICE ERROR %s. URL %s' % (e,url))
                         car['price'] = ''
                     try:
                         year = re.findall(r'<div\sclass=\"dv03 short\">\n?\s+<p>(\d{4})',data)[0]
+                        car["year"] = year
                     except Exception as e:
                         print('YEAR ERROR %s. URL %s' % (e,url))
                         year = ''
+                        car["year"] = year
                     try:
                         car_registration = re.findall(r'<li><span>최초등록일<\/span>\s?<span>\s+(\d{4})년',data)[0]
+                        car["car_registration"] = car_registration
                     except Exception as e:
                         print('CAR REGISTRATION ERROR %s. URL %s' % (e,url))
-                        car_registration = ''  
+                        car_registration = ''
+                        car["car_registration"] = car_registration
                     try:
                         displacement = int(re.findall(r'<li>\s?<span>배기량\s?\/\s?인승<\/span>\s?<span>(.+)cc',data)[0].replace(",", ""))#обем двигателя 
+                        car["displacement"] = displacement
                     except Exception as e:
                         print('DISPLACEMENT ERROR %s. URL %s' % (e,url))
                         displacement = ''
+                        car["displacement"] = displacement
                     try:
                         distance_driven = int(re.findall(r'<li>\s?<span>주행거리<\/span>\s?<span>(.+)Km',data)[0].replace(",", ""))
+                        car["distance_driven"] = distance_driven
                     except Exception as e:
                         print('DISTANCE DRIVEN ERROR %s. URL %s' % (e,url))
                         distance_driven = ''
+                        car["distance_driven"] = distance_driven
                     try:
                         color = re.findall(r'<li>\s?<span>색상<\/span>\s<span>(.+)<\/span><\/li>',data)
                         if(len(color)>0):
@@ -515,31 +557,44 @@ class GlovisaAsync:
                         transmission = re.findall(r'<li><span>미션<\/span>\s?<span>(.+)<\/span>\s?<\/li>',data)[0]
                         if(transmission == "A/T"):
                             transmission = "Автомат"
+                            car['transmission'] = "Автомат"
                         else:
                             transmission = "Механика"
+                            car['transmission'] = "Механика"
                     except Exception as e:
                         print('TRANSMISSION ERROR %s. URL %s' % (e,url))
                         transmission = ''
+                        car['transmission'] = "Механика"
                     try:
                         fuel = re.findall(r'<li>\s?<span>연료형태<\/span>\s?<span>(.+)<\/span>\s?<\/li>',data)[0]
                         if(fuel == "디젤"):
                             fuel = "Дизель"
+                            car["fuel"]=fuel
                         elif(fuel=="가솔린"):
                             fuel = "Бензин"
+                            car["fuel"]=fuel
+                        else:
+                            fuel = "Газ"
+                            car["fuel"]=fuel
                     except Exception as e:
                         print('FUEL ERROR %s. URL %s' % (e,url))
                         fuel = ''
                     try:
                         car_estimate = re.findall(r'\s?[ABCDF]?\s+\/\s+\d{1}\s?',data)[0].replace("\r\n", "")
                         car_estimate = re.sub("\s+", "", car_estimate)
+                        car['car_estimate'] = car_estimate
                     except Exception as e:
                         print('CAR ESTIMATE ERROR %s. URL %s' % (e,url))
                         car_estimate = ''
+                        car['car_estimate'] = car_estimate
                     try:
                         images = re.findall(r'src="\/cm\/fileDownMan\.do\?menuCd\=[A-Za-z&;%=0-9]+',data)
                         images = list(map(lambda x: "https://www.glovisaa.com"+x.replace('src="', ''), images))
                         car_defect_map = images.pop()
                         del images[0:2]
+                        del images[0:int(len(images)/2)]
+                        #self.download_images(images, car['title'])
+                        #await self.fetch_files(images, car['title'])
                         print(len(images))
                     except Exception as e:
                         print('IMAGES ERROR %s. URL %s' % (e,url))
@@ -552,23 +607,35 @@ class GlovisaAsync:
                         car_type = ''
                     try:
                         car['category'] = self.get_category(title)
+                        car['model'] = car['category']
                     except Exception as e:
                         print('CAR CATEGORY ERROR %s. URL %s' % (e,url))
                         car['category'] = ''
+                        car['model'] = car['category']
                     try:
                         car['category_url'] = self.get_category_url(car['category'])
                     except Exception as e:
                         print('CAR CATEGORY URL ERROR %s. URL %s' % (e,url))
                         car['category_url'] = ''
                     try:
-                        car['description'] = f"""<h2 class="page-subtit mt60">Лист проверки производительности</h2><div class="car-status-map"><img src="{car_defect_map}"></div><table class="tbl-v02"><colgroup><col style="width: 140px;"><col style="width: auto;"></colgroup><tbody><tr><th> Аббревиатура </th><td><p class="abbr"><span class="abbr-q"> Небольшая вмятина </span><span class="abbr-pp"> Косметический окрас </span><span class="abbr-ppq"> Косметический окрас/сейчас есть вмятина </span><span class="abbr-xx"> Замена </span><span class="abbr-xxa"> Была замена/сейчас есть мелкая царапина </span><span class="abbr-x"> Рекомендуется замена (на практике часто мелкий скол на стекле, фаре, зеркале) </span><span class="abbr-e"> Рекомендуется замена </span><span class="abbr-r"> Сколы/царапины </span><span class="abbr-w"> Ремонт/возможно шпаклëвка </span><span class="abbr-m"> Регулировка </span><span class="abbr-f"> Изгиб/залом металла </span><span class="abbr-а"> Мелкие Сколы/царапины </span><span class="abbr-с"> Коррозия </span></p></td></tr><tr style="display: none;"><th> Specials </th><td> Дефект сиденья, дефект материала внутренней части, дефект аварийной подушки, разгрузка двигателя, утечка моторного масла, шарнир двигателя, контрольная лампа двигателя, дефект миссии, дефект PS, дефект центровки, дефект глушителя, нижний шарнир, коррозия нижней части кузова </td></tr></tbody></table>"""
+                        data_html = f"""<h2 class="page-subtit mt60">Лист проверки производительности</h2><div class="car-status-map"><img src="{car_defect_map}"></div><table class="tbl-v02"><colgroup><col style="width\: 140px\;"><col style="width\: auto\;"></colgroup><tbody><tr><th> Аббревиатура </th><td><p class="abbr"><span class="abbr-q"> Небольшая вмятина </span><span class="abbr-pp"> Косметический окрас </span><span class="abbr-ppq"> Косметический окрас/сейчас есть вмятина </span><span class="abbr-xx"> Замена </span><span class="abbr-xxa"> Была замена/сейчас есть мелкая царапина </span><span class="abbr-x"> Рекомендуется замена (на практике часто мелкий скол на стекле, фаре, зеркале) </span><span class="abbr-e"> Рекомендуется замена </span><span class="abbr-r"> Сколы/царапины </span><span class="abbr-w"> Ремонт/возможно шпаклëвка </span><span class="abbr-m"> Регулировка </span><span class="abbr-f"> Изгиб/залом металла </span><span class="abbr-а"> Мелкие Сколы/царапины </span><span class="abbr-с"> Коррозия </span></p></td></tr><tr style="display: none\;"><th> Specials </th><td> Дефект сиденья, дефект материала внутренней части, дефект аварийной подушки, разгрузка двигателя, утечка моторного масла, шарнир двигателя, контрольная лампа двигателя, дефект миссии, дефект PS, дефект центровки, дефект глушителя, нижний шарнир, коррозия нижней части кузова </td></tr></tbody></table>"""
+                        data_html = data_html.replace("'", "\\'")
+                        data_html = data_html.replace('"', '\\"')
+                        car["description"] = data_html
                     except Exception as e:
                         print('CAR DESCRIPTION ERROR %s. URL %s' % (e,url))
                         car['description'] = ''
+                    car['auction_date'] = f"glovisaauction {config['GLOVIS']['DATE']}"
                     car['url']=car_vin.lower()+"-"+self.get_car_mark_url(car_mark)
                     car['properties'] = 'Цвет=[type=assortmentCheckBox value=%s product_margin=Синий|Желтый|Белый|Серебро|Красный|Фиолетовый|Оранжевый|Зеленый|Серый|Золото|Коричневый|Голубой|Черный|Бежевый]&Кузов=[type=assortmentCheckBox value=%s product_margin=Универсал|Фургон|Фура|Трактор|Седан|Родстер|Пикап|Мотоцикл|Минивен|Хэтчбек|Кроссовер|Купе|Кабриолет|Багги]&Пробег=%s&Двигатель=%s&Год=%s&Первая регистрация=%s&Трансмиссия=[type=assortmentCheckBox value=%s product_margin=Механика|Автомат]&Топливо=[type=assortmentCheckBox value=%s product_margin=Дизель|Бензин|Газ]&Модель=%s&Марка=%s&Номер лота=%s&Оценка автомобиля=%s&VIN номер=%s&Аукцион=glovisaauction %s' % (car_color, car_type, distance_driven, displacement, year, car_registration, transmission, fuel, car_mark, car["category"], car['article'], car_estimate, car_vin, config['GLOVIS']['DATE'])
-                    car['images'] = self.get_img_str(images, car['title'])
+                    img_str, img_alt = self.get_img_str(images, car['title'])
+                    car['images'] = img_str
+                    car["image_title"] = img_alt
+                    car["image_alt"] = img_alt
                     #await asyncio.wait([self.fetch_file(img, car['title'], i) for (i, img) in enumerate(images)])
+                    lastid = self.add_p.addnewproduct(car)
+                    self.add_p.updateproduct(lastid)
+                    self.add_p.addproductproperty(lastid,car)
                     #self.write_csv(car)
                 else:
                     print(response.status)
@@ -579,6 +646,7 @@ class GlovisaAsync:
             # something went wrong in general. Not a connection error, that was handled
             # above.
             print("Oops, something else went wrong with the request. GET DATA ERROR. URL %s" % url)
+
     async def get_data(self, urls):
         try:
             async with aiohttp.ClientSession() as session:
@@ -587,8 +655,9 @@ class GlovisaAsync:
             print('fetch_content ERROR %s' % e)
         finally:
             await session.close()
+
     #складаємо всі ссилки на авто в один файл
     def get_all_links(self, car_link=config['GLOVIS']['CAR_LINK'], file_name="car_id3.txt"):
         data = self.read_file(file_name)
         res = list(map(lambda x: x.split('|'), data))#[:-1] - удаляет перенос строки в списке car_id3.txt
-        return list(map(lambda x: '{}?&gn={}&rc={}&searchtext=&ac={}&atn={}&acc={}&bmaker=undefined&bmodel=undefined'.format(car_link, x[1], x[0], urllib.parse.quote_plus("TQhYt3GD6GvgPdVw1QX+Wg=="), urllib.parse.quote_plus(str(config['GLOVIS']['ATN_NUM_NEW'])), urllib.parse.quote_plus("u9cesU3il5ljSzAzHZzmEg==")), res))
+        return list(map(lambda x: '{}?&gn={}&rc={}&searchtext=&ac={}&atn={}&acc={}&bmaker=undefined&bmodel=undefined'.format(car_link, x[1], x[0], urllib.parse.quote_plus("TQhYt3GD6GvgPdVw1QX+Wg=="), urllib.parse.quote_plus(str(config['GLOVIS']['ATN_NUM'])), urllib.parse.quote_plus("u9cesU3il5ljSzAzHZzmEg==")), res))
